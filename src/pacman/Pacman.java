@@ -25,7 +25,7 @@ public class Pacman {
 	
 	private static Random random = new Random();
 	private static int move;
-	private static Keys lastDirection;
+	private static ArrayList<Keys> moves = new ArrayList<Keys>();
 	private static ArrayList<Integer> highScores = new ArrayList<Integer>();
 	private static WebElement controls;
 	private static WebDriver driver;
@@ -46,19 +46,15 @@ public class Pacman {
 		ArrayList<Keys> potentialDirections = new ArrayList<Keys>();
 		move = 1;
 		
-		while(!isPacmanAlive()) {
+		while(!isPacmanAlive() && !isPacmanReady()) {
 			Thread.sleep(500);
 		}
 		
 		System.out.println("==================");
-		System.out.println("    LET'S GO!!:");
+		System.out.println("    LET'S GO!!");
 		System.out.println("==================");
 		
 		while(isPacmanAlive()) {
-			
-			while(!isPacmanReady()) {
-				Thread.sleep(500);
-			}
 			
 			if (move == 1) {
 				potentialDirections.add(Keys.ARROW_LEFT);
@@ -68,15 +64,15 @@ public class Pacman {
 			} else {
 				if (move == 2) {
 					move(Keys.ARROW_UP, 1000);
-					move(getOppositeDirection(lastDirection), 1000);
+					move(moves.get(0), 1000);
 				} else {
 					potentialDirections.clear();
 					potentialDirections.add(Keys.ARROW_UP);
 					potentialDirections.add(Keys.ARROW_DOWN);
 					potentialDirections.add(Keys.ARROW_LEFT);
 					potentialDirections.add(Keys.ARROW_RIGHT);
-					potentialDirections.remove(lastDirection);
-					potentialDirections.remove(getOppositeDirection(lastDirection));
+					potentialDirections.remove(moves.get(moves.size()-1));
+					potentialDirections.remove(getOppositeDirection(moves.get(moves.size()-1)));
 					
 					if (isPacmanAtTopEdge()) {
 						System.out.println("Can't go up!");
@@ -98,7 +94,6 @@ public class Pacman {
 					Keys direction = potentialDirections.get(random.nextInt(potentialDirections.size()));
 					int pause = random.nextInt((MAX_PAUSE - MIN_PAUSE + 1) + MIN_PAUSE);
 					move(direction, pause);
-					lastDirection = direction;
 				}
 			}
 		}
@@ -107,6 +102,7 @@ public class Pacman {
 	}
 	
 	private static void move(Keys direction, int pause) {
+		moves.add(direction);
 		System.out.println(move + ": " + direction.name() + ", " + pause);
 		controls.sendKeys(direction);
 		try {
