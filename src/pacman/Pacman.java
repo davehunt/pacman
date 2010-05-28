@@ -75,19 +75,19 @@ public class Pacman {
 					potentialDirections.remove(getOppositeDirection(moves.get(moves.size()-1)));
 					
 					if (isPacmanAtTopEdge()) {
-						System.out.println("Can't go up!");
+						//System.out.println("Can't go up!");
 						potentialDirections.remove(Keys.ARROW_UP);
 					}
 					if (isPacmanAtBottomEdge()) {
-						System.out.println("Can't go down!");
+						//System.out.println("Can't go down!");
 						potentialDirections.remove(Keys.ARROW_DOWN);
 					}
 					if (isPacmanAtLeftEdge()) {
-						System.out.println("Can't go left!");
+						//System.out.println("Can't go left!");
 						potentialDirections.remove(Keys.ARROW_LEFT);
 					}
 					if (isPacmanAtRightEdge()) {
-						System.out.println("Can't go right!");
+						//System.out.println("Can't go right!");
 						potentialDirections.remove(Keys.ARROW_RIGHT);
 					}
 					
