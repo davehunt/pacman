@@ -55,15 +55,20 @@ public class Pacman {
 		System.out.println("==================");
 		
 		while(isPacmanAlive()) {
+			
+			while(!isPacmanReady()) {
+				Thread.sleep(500);
+			}
+			
 			if (move == 1) {
 				potentialDirections.add(Keys.ARROW_LEFT);
 				potentialDirections.add(Keys.ARROW_RIGHT);
 				Keys direction = potentialDirections.get(random.nextInt(potentialDirections.size()));
-				move(direction, 500);
+				move(direction, 1000);
 			} else {
 				if (move == 2) {
-					move(Keys.ARROW_UP, 500);
-					move(getOppositeDirection(lastDirection), 500);
+					move(Keys.ARROW_UP, 1000);
+					move(getOppositeDirection(lastDirection), 1000);
 				} else {
 					potentialDirections.clear();
 					potentialDirections.add(Keys.ARROW_UP);
@@ -125,8 +130,11 @@ public class Pacman {
 	}
 	
 	private static boolean isPacmanAlive() {
-		int[] pacmanBackgroundPosition = getBackgroundPositionForId(PACMAN);
-		return pacmanBackgroundPosition[0] > -142 && pacmanBackgroundPosition[0] != -42;
+		return getBackgroundPositionForId(PACMAN)[0] > -142;
+	}
+	
+	private static boolean isPacmanReady() {
+		return getBackgroundPositionForId(PACMAN)[0] == -2;
 	}
 	
 	private static boolean isPacmanAtTopEdge() {
